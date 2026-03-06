@@ -9,11 +9,6 @@ import (
 	"sync"
 )
 
-type UserRepository interface {
-	Create(ctx context.Context, user *model.User) (*model.User, error)
-	Get(ctx context.Context, ID int) (*model.User, error)
-}
-
 type UserRepo struct {
 	Store  map[int]*model.User
 	mx     sync.RWMutex

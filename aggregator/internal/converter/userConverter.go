@@ -19,6 +19,7 @@ func (c *UserConvert) ConvertBytesToUser(req *http.Request) (*model.User, error)
 	if err != nil {
 		return nil, err
 	}
+	defer req.Body.Close()
 
 	user := &model.User{}
 
