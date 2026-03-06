@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"aggregatorProject/internal/model"
+	"aggregator/internal/model"
 	"context"
 )
 

@@ -13,3 +13,7 @@ func NewConf(envConf EnvConfig) *Conf {
 func (c *Conf) GetAddress() string {
 	return c.EnvConf.GetAddress()
 }
+
+func (c *Conf) GetConnToDB() string {
+	return "postgres://username:userpassword@localhost:5432/testdb?sslmode=disable"
+}

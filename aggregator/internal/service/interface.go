@@ -1,6 +1,6 @@
 package service
 
-import "aggregatorProject/internal/model"
+import "aggregator/internal/model"
 
 type UserService interface {
 	Create(*model.User) (*model.User, error)

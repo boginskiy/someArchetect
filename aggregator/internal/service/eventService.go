@@ -1,12 +1,12 @@
 package service
 
 import (
-	"aggregatorProject/cmd/config"
-	"aggregatorProject/internal/converter"
-	"aggregatorProject/internal/logg"
-	"aggregatorProject/internal/model"
-	"aggregatorProject/internal/repository"
-	"aggregatorProject/pkg/maps"
+	"aggregator/cmd/config"
+	"aggregator/internal/converter"
+	"aggregator/internal/logg"
+	"aggregator/internal/model"
+	"aggregator/internal/repository"
+	"aggregator/pkg/maps"
 	"sync/atomic"
 
 	"context"
@@ -62,7 +62,7 @@ func (s *EventServi) Reciver(ctx context.Context, eventCh <-chan *model.Event) {
 func (s *EventServi) Procc(event *model.Event) {
 	// Сохраняем определенное количество данных и далее отправляем в слой Репо.
 
-	if atomic.LoadInt64(s.limit) < 10 {
+	if atomic.LoadInt64(s.limit) < 3 {
 		s.store.Put(event.Type, int64(event.Value))
 		atomic.AddInt64(s.limit, 1)
 
@@ -77,9 +77,6 @@ func (s *EventServi) Procc(event *model.Event) {
 func (s *EventServi) pprint() {
 	fmt.Printf("Result: %v\n\r", s.store)
 }
-
-// Запись в БД ?
-// Потестить
 
 // Kafka далее
 // Проработка архитектуры Козырев

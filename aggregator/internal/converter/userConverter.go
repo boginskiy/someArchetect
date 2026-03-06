@@ -1,7 +1,7 @@
 package converter
 
 import (
-	"aggregatorProject/internal/model"
+	"aggregator/internal/model"
 	"encoding/json"
 	"io"
 	"net/http"

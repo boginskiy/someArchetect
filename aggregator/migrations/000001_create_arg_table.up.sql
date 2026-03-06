@@ -1,0 +1,7 @@
+CREATE TABLE args (
+    id SERIAL PRIMARY KEY,
+    type VARCHAR(20) NOT NULL,
+    Value INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+

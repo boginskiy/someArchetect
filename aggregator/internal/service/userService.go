@@ -1,10 +1,10 @@
 package service
 
 import (
-	"aggregatorProject/cmd/config"
-	"aggregatorProject/internal/logg"
-	"aggregatorProject/internal/model"
-	"aggregatorProject/internal/repository"
+	"aggregator/cmd/config"
+	"aggregator/internal/logg"
+	"aggregator/internal/model"
+	"aggregator/internal/repository"
 	"context"
 )
 

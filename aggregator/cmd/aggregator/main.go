@@ -1,7 +1,7 @@
 package main
 
 import (
-	"aggregatorProject/internal/app"
+	"aggregator/internal/app"
 	"context"
 	"log"
 )

@@ -1,9 +1,9 @@
 package repository
 
 import (
-	"aggregatorProject/cmd/config"
-	"aggregatorProject/internal/logg"
-	"aggregatorProject/internal/model"
+	"aggregator/cmd/config"
+	"aggregator/internal/logg"
+	"aggregator/internal/model"
 	"context"
 	"errors"
 	"sync"

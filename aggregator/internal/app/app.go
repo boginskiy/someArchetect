@@ -1,16 +1,17 @@
 package app
 
 import (
-	"aggregatorProject/cmd/config"
-	"aggregatorProject/cmd/server"
-	"aggregatorProject/internal/converter"
-	"aggregatorProject/internal/handlers"
-	"aggregatorProject/internal/logg"
-	"aggregatorProject/internal/model"
-	"aggregatorProject/internal/repository"
-	"aggregatorProject/internal/response"
-	"aggregatorProject/internal/service"
-	"aggregatorProject/pkg/router"
+	"aggregator/cmd/config"
+	"aggregator/cmd/server"
+	"aggregator/internal/converter"
+	"aggregator/internal/db"
+	"aggregator/internal/handlers"
+	"aggregator/internal/logg"
+	"aggregator/internal/model"
+	"aggregator/internal/repository"
+	"aggregator/internal/response"
+	"aggregator/internal/service"
+	"aggregator/pkg/router"
 	"context"
 )
 
@@ -32,9 +33,13 @@ func NewApp(ctx context.Context) (*App, error) {
 }
 
 func (a *App) Run() error {
+	// DB
+	db := db.NewDB(a.ctx, a.cfg, a.logger)
+	defer db.Close()
+
 	// Repository
 	userRepo := repository.NewUserRepo(a.cfg, a.logger)
-	eventRepo := repository.NewEventRepo(a.cfg, a.logger)
+	eventRepo := repository.NewEventRepo(a.ctx, a.cfg, a.logger, db)
 
 	// Converter
 	userConverter := converter.NewUserConvert()

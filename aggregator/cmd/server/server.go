@@ -1,8 +1,8 @@
 package server
 
 import (
-	"aggregatorProject/cmd/config"
-	"aggregatorProject/internal/logg"
+	"aggregator/cmd/config"
+	"aggregator/internal/logg"
 	"context"
 	"fmt"
 	"net/http"

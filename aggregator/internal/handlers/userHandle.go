@@ -1,9 +1,9 @@
 package handlers
 
 import (
-	"aggregatorProject/internal/converter"
-	"aggregatorProject/internal/response"
-	"aggregatorProject/internal/service"
+	"aggregator/internal/converter"
+	"aggregator/internal/response"
+	"aggregator/internal/service"
 	"net/http"
 )
 

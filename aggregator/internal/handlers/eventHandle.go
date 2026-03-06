@@ -1,8 +1,8 @@
 package handlers
 
 import (
-	"aggregatorProject/internal/converter"
-	"aggregatorProject/internal/model"
+	"aggregator/internal/converter"
+	"aggregator/internal/model"
 	"context"
 	"log"
 	"net/http"
@@ -34,6 +34,7 @@ func (h *EventHandle) Listen(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 		return
 	}
+
 	h.eventCh <- event
 
 	// Потребляем данные по HTTP без ответа
