@@ -34,8 +34,5 @@ func (h *EventHandle) Listen(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 		return
 	}
-
 	h.eventCh <- event
-
-	// Потребляем данные по HTTP без ответа
 }

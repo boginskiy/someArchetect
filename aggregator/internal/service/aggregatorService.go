@@ -13,7 +13,9 @@ import (
 	"fmt"
 )
 
-type EventServi struct {
+const CntWorkers = 3
+
+type AggregatorServi struct {
 	Repo      repository.EventRepository
 	Converter converter.EventConverter
 
@@ -23,16 +25,16 @@ type EventServi struct {
 	logger logg.Logger
 }
 
-func NewEventServi(
+func NewAggregatorServi(
 	ctx context.Context,
 	config config.Config,
 	logger logg.Logger,
 	repo repository.EventRepository,
 	eventCh <-chan *model.Event,
 	converter converter.EventConverter,
-) *EventServi {
+) *AggregatorServi {
 
-	tmpEvent := &EventServi{
+	tmpEvent := &AggregatorServi{
 		Repo:      repo,
 		Converter: converter,
 		cfg:       config,
@@ -46,20 +48,29 @@ func NewEventServi(
 	return tmpEvent
 }
 
-func (s *EventServi) Reciver(ctx context.Context, eventCh <-chan *model.Event) {
-	for {
-		select {
-		case <-ctx.Done():
-			s.pprint()
-			return
+func (s *AggregatorServi) Reciver(ctx context.Context, eventCh <-chan *model.Event) {
+	s.workers(CntWorkers, eventCh)
+}
 
-		case event := <-eventCh:
-			s.Procc(event)
-		}
+func (s *AggregatorServi) workers(cnt int, eventCh <-chan *model.Event) {
+	done := make(chan bool)
+
+	for i := 0; i < cnt; i++ {
+		go func(workerID int) {
+			for event := range eventCh {
+				s.Procc(event)
+			}
+			done <- true
+		}(i)
+	}
+
+	// Stop
+	for i := 0; i < cnt; i++ {
+		<-done
 	}
 }
 
-func (s *EventServi) Procc(event *model.Event) {
+func (s *AggregatorServi) Procc(event *model.Event) {
 	// Сохраняем определенное количество данных и далее отправляем в слой Репо.
 
 	if atomic.LoadInt64(s.limit) < 3 {
@@ -74,6 +85,6 @@ func (s *EventServi) Procc(event *model.Event) {
 	}
 }
 
-func (s *EventServi) pprint() {
+func (s *AggregatorServi) pprint() {
 	fmt.Printf("Result: %v\n\r", s.store)
 }

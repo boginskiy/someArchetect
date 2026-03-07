@@ -50,10 +50,11 @@ func (a *App) Run() error {
 
 	// Channels
 	eventCh := make(chan *model.Event)
+	defer close(eventCh)
 
 	// Service
 	userService := service.NewUserServi(a.ctx, a.cfg, a.logger, userRepo)
-	_ = service.NewEventServi(a.ctx, a.cfg, a.logger, eventRepo, eventCh, eventConverter)
+	_ = service.NewAggregatorServi(a.ctx, a.cfg, a.logger, eventRepo, eventCh, eventConverter)
 
 	// Response
 	response := response.NewResp()
