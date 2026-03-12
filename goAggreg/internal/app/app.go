@@ -4,8 +4,10 @@ import (
 	"context"
 	"goAggreg/cmd/config"
 	"goAggreg/cmd/server"
+	"goAggreg/internal/converter"
 	"goAggreg/internal/handler"
 	"goAggreg/internal/logger"
+	"goAggreg/internal/service"
 )
 
 type App struct {
@@ -26,17 +28,7 @@ func NewApp(ctx context.Context) (*App, error) {
 }
 
 func (a *App) Run() error {
-	// // Converter
-	// converter :=
-
-	// // Service
-	// service :=
-
-	// Handler
-	handler := handler.NewHandle()
-
-	return a.server.Run(handler)
-
+	return a.server.Run()
 }
 
 func (a *App) InitAttrs(ctx context.Context) error {
@@ -74,10 +66,20 @@ func (a *App) initLogger(ctx context.Context) error {
 }
 
 func (a *App) initServer(ctx context.Context) error {
-	srv, err := server.NewServerHTTP(ctx, a.config)
+	// Converter
+	converter := converter.NewEventConvert()
+
+	// Service
+	service := service.NewEventService()
+
+	// Handler
+	handler := handler.NewHandle(converter, service)
+
+	srv, err := server.NewServerHTTP(ctx, a.config, handler)
 	if err != nil {
 		return err
 	}
+
 	a.server = srv
 	return nil
 }

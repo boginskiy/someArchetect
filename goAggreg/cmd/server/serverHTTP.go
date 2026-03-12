@@ -7,7 +7,7 @@ import (
 )
 
 type Server interface {
-	Run(h http.Handler) error
+	Run() error
 }
 
 type ServerHTTP struct {
@@ -15,14 +15,15 @@ type ServerHTTP struct {
 	S      http.Server
 }
 
-func NewServerHTTP(ctx context.Context, cfg config.Config) (*ServerHTTP, error) {
+func NewServerHTTP(ctx context.Context, cfg config.Config, handler http.Handler) (*ServerHTTP, error) {
 	return &ServerHTTP{
 		config: cfg,
-		S:      http.Server{Addr: cfg.GetAddress()},
+		S: http.Server{
+			Addr:    cfg.GetAddress(),
+			Handler: handler},
 	}, nil
 }
 
-func (s *ServerHTTP) Run(h http.Handler) error {
-	s.S.Handler = h
+func (s *ServerHTTP) Run() error {
 	return s.S.ListenAndServe()
 }
